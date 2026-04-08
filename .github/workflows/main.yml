@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
@@ -20,14 +20,16 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install -DskipTests
+        env:
+          MAVEN_OPTS: "-Xmx2048m"
 
       - name: Deploy to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: "vprofile-app" # Make sure this matches AWS
-          environment_name: "vprofile-env" # Make sure this matches AWS
+          application_name: "vprofile-app"
+          environment_name: "vprofile-env"
           version_label: "vprofile-${{ github.sha }}"
           region: us-east-1
-          deployment_package: target/vprofile.war
+          deployment_package: target/vprofile-v2.war
