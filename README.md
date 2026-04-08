@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/26575980/README.md)
 # Prerequisites
 #
 - JDK 11 
